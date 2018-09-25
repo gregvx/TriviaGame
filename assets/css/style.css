@@ -1,7 +1,63 @@
-h1 {
-    background-color: blue;
-}
-
 body {
     text-align: center;
+    background-color: lightgray;
+}
+
+h1 {
+    font-family: 'Lobster', cursive;
+    font-size: 3em;
+    color: purple;
+    margin: 25px;
+}
+
+.gameBox {
+    width: 600px;
+    height: 400px;
+    background-color: aquamarine;
+    display: inline-block;
+    background-image: url("../images/gameBack.jpg");
+    position: relative;
+    text-align: left;
+    /* font-family: 'Lobster', cursive; */
+    /* font-family: 'Cuprum', sans-serif; */
+    font-family: 'Alice', serif;
+    color: ghostwhite;
+}
+
+#questionField {
+    /* background-color: lavender; */
+    display: inline-block;
+    position: absolute;
+    top: 50px;
+    left: 20px;
+    width: 450px;
+    height: 80px;
+    font-size: 1.5em;
+}
+
+#choiceField {
+    /* background-color: blueviolet; */
+    display: inline-block;
+    position: absolute;
+    left: 20px;
+    top: 160px;
+    width: 560px;
+    height: 180px;
+    text-align: center;
+    font-size: 1.5em;
+}
+
+#choiceField p {
+    margin: 10px;
+}
+
+#timerClock {
+    /* background-color: red; */
+    display: inline-block;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    margin: 0;
+    font-size: 2em;
+    
 }
