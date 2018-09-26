@@ -1,20 +1,20 @@
 //event handlers
-$('#startButton').click(function() {
+$('#startButton').click(function () {
     startGame();
 });
-$('#answer1').click(function() {
+$('#answer1').click(function () {
     answerClicked(0);
 });
-$('#answer2').click(function() {
+$('#answer2').click(function () {
     answerClicked(1);
 });
-$('#answer3').click(function() {
+$('#answer3').click(function () {
     ganswerClicked(2);
 });
-$('#answer4').click(function() {
+$('#answer4').click(function () {
     answerClicked(3);
 });
-$('#answer5').click(function() {
+$('#answer5').click(function () {
     answerClicked(4);
 });
 
@@ -44,17 +44,17 @@ function displayQuestion() {
     $('#questionField').html("<p>" + q + "</p>");
     var answers = [];
     answers.push(questions[currentIndex][1]);
-    for (var i = 0; i<4; i++) {
+    for (var i = 0; i < 4; i++) {
         answers.push(questions[currentIndex][2][i])
     }
-    
+
     //now answers is an array of five strings. The first string is the correct answer,
     //the next four strings are wrong answers. Need to shuffle the answers
     answers = shuffleAnswers(answers);
-    
+
     //now, prepare the html for the choices to display
     answerChoicesHtml = "";
-    for (var j = 0; j<5; j++) {
+    for (var j = 0; j < 5; j++) {
         answerChoicesHtml += ("<p>" + answers[j] + "</p>");
     }
     //now put that markup into the view
@@ -73,12 +73,41 @@ function shuffleAnswers(answers) {
 //this function starts a countdown and updates the view every second show the time remaining
 function startTimer() {
     var t = 5;
-    var timer = setInterval(function(){
+    var timer = setInterval(function () {
         $('#timerClock').html("<p>Time remaining: " + t + "s</p>");
         t--;
         if (t === 0) {
             clearInterval(timer);
+            misses++;
+            showCorrect();
         }
     }, 1000);
-    
+
+}
+
+//this function is called when the user selects the wrong answer or
+//when the clock runs out. It splashes the correct answer on the screen for a
+//few seconds, then moves on to the next question.
+
+function showCorrect() {
+    document.getElementById('runningGameBox').style.display = "none";
+    document.getElementById('wrongSplash').style.display = "inline-block";
+    var displayText = "The correct answer was: " + questions[currentIndex][1];
+    $('#dialogDisplay').html("<p>" + displayText + "</p>");
+    // console.log(displayText);
+    setTimeout(function () {
+        document.getElementById('wrongSplash').style.display = "none";
+        document.getElementById('runningGameBox').style.display = "inline-block";
+        currentIndex++;
+        if (currentIndex < questions.length) {
+            displayQuestion();
+        }
+        else {
+            displayScore();
+        }
+    }, 3000);
+}
+
+function displayScore() {
+    alert("Game over. You got " + hits + " questions right and " + misses + " questions wrong.");
 }
