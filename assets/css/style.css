@@ -61,3 +61,26 @@ h1 {
     font-size: 2em;
     
 }
+
+#openingSplash {
+    position: relative;
+    width: 600px;
+    height: 400px;
+    /* background-color: red; */
+}
+#startButton {
+    position: absolute;
+    display: inline-block;
+    top: 180px;
+    left: 180px;
+    font-size: 2.2em; 
+    background-color:blueviolet;
+    cursor: pointer;
+}
+
+#runningGameBox {
+    position: relative;
+    display: none;
+    width: 600px;
+    height: 400px;
+}
