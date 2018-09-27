@@ -98,7 +98,17 @@ function displayQuestion() {
 
 //this function takes an array of five strings and shuffles the order of the strings
 function shuffleAnswers(answers) {
-    //TODO write logic to shuffle the order...
+    console.log(answers);
+    var m = answers.length, t, i;
+    // While there remain elements to shuffle…
+    while (m) {
+        // Pick a remaining element…
+        i = Math.floor(Math.random() * m--);
+        // And swap it with the current element.
+        t = answers[m];
+        answers[m] = answers[i];
+        answers[i] = t;
+    }
     return answers;
 }
 
