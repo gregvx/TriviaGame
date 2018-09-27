@@ -17,12 +17,16 @@ $('#answer4').click(function () {
 $('#answer5').click(function () {
     answerClicked(5);
 });
+$('#dialogDisplay').click(function () {
+    restartGame();
+});
 
 //global variables
 var hits = 0;
 var misses = 0;
 var currentIndex = 0;
 var intervalNeedsClearing = false;
+var gameFinished = false;
 var q1 = ["Question 1", "answer 1", ["false1", "false2", "false3", "false4"]];
 var q2 = ["Question 2", "answer 2", ["false2.1", "false2.2", "false3.2", "false4.2"]];
 var questions = [q1, q2];
@@ -37,21 +41,21 @@ function startGame() {
 //this main function gets called when user clicks on an answer. a paramater x is passed
 // in corresponding to the index of the answer clicked.
 function answerClicked(x) {
-    //first figure out what the user clicked
+    //first, clear out the countdown clock display, that way, it wont show the wrong thing later
+    $('#timerClock').html("<p></p>");
+    //second figure out what the user clicked
     var selectorStr = '#answer' + x;
     var selectedAnswer = $(selectorStr).text();
-    //second, figure out correct answer
+    //third, figure out correct answer
     var corAnswer = questions[currentIndex][1];
     //now, handle response to user selection
     if (selectedAnswer === corAnswer) {
         hits++;
-        currentIndex++;
         intervalNeedsClearing = true;
-        moveOn();
+        showCongrats();
     }
     else {
         misses++;
-        //currentIndex does not need to be incremented here, the showCorrect function will handle that
         intervalNeedsClearing = true;
         showCorrect();
     }
@@ -75,7 +79,7 @@ function displayQuestion() {
     //now, prepare the view for the choices to display
     answerChoicesHtml = "";
     for (var j = 0; j < 5; j++) {
-        var idN = j+1;
+        var idN = j + 1;
         answerChoicesHtml = ("<p>" + answers[j] + "</p>");
         $('#answer' + idN).html(answerChoicesHtml);
     }
@@ -97,15 +101,19 @@ function startTimer() {
         $('#timerClock').html("<p>Time remaining: " + t + "s</p>");
         //first check and see if time is remaining. if so, check and see if user
         //clicked a choice, which would have set the intNeedsClearing bool to true
-        if (t>0) {
+        if (t > 0) {
             if (intervalNeedsClearing === true) {
                 clearInterval(timer);
+                //here, we clear out the countdown clock display, that way, it won't show the wrong thing later
+                $('#timerClock').html("<p></p>");
                 intervalNeedsClearing = false;
             }
         }
         //now handle business of timer running out
         else if (t === 0) {
             clearInterval(timer);
+            //here, we clear out the countdown clock display, that way, it won't show the wrong thing later
+            $('#timerClock').html("<p></p>");
             misses++;
             showCorrect();
         }
@@ -117,15 +125,31 @@ function startTimer() {
 //this function is called when the user selects the wrong answer or
 //when the clock runs out. It splashes the correct answer on the screen for a
 //few seconds, then moves on to the next question.
-
 function showCorrect() {
     document.getElementById('runningGameBox').style.display = "none";
-    document.getElementById('wrongSplash').style.display = "inline-block";
+    document.getElementById('responseSplash').style.display = "inline-block";
     var displayText = "The correct answer was: " + questions[currentIndex][1];
     $('#dialogDisplay').html("<p>" + displayText + "</p>");
     // console.log(displayText);
     setTimeout(function () {
-        document.getElementById('wrongSplash').style.display = "none";
+        document.getElementById('responseSplash').style.display = "none";
+        document.getElementById('runningGameBox').style.display = "inline-block";
+        currentIndex++;
+        moveOn();
+    }, 3000);
+}
+
+//this function is called when the user selects the right answer or
+//It splashes a congradulatory remark on the screen for a
+//few seconds, then moves on to the next question.
+function showCongrats() {
+    document.getElementById('runningGameBox').style.display = "none";
+    document.getElementById('responseSplash').style.display = "inline-block";
+    var displayText = "That was correct!";
+    $('#dialogDisplay').html("<p>" + displayText + "</p>");
+    // console.log(displayText);
+    setTimeout(function () {
+        document.getElementById('responseSplash').style.display = "none";
         document.getElementById('runningGameBox').style.display = "inline-block";
         currentIndex++;
         moveOn();
@@ -145,5 +169,21 @@ function moveOn() {
 
 //this function handles the end of game logic and displays the final score
 function displayScore() {
-    alert("Game over. You got " + hits + " questions right and " + misses + " questions wrong.");
+    // alert("Game over. You got " + hits + " questions right and " + misses + " questions wrong.");
+    document.getElementById('runningGameBox').style.display = "none";
+    document.getElementById('responseSplash').style.display = "inline-block";
+    var displayText = "Game over. You got " + hits + " question(s) right and " + misses + " question(s) wrong. Click here to start over.";
+    $('#dialogDisplay').html("<p>" + displayText + "</p>");
+    gameFinished = true;
+}
+
+function restartGame() {
+    if (gameFinished) {
+        gameFinished = false;
+        currentIndex = 0;
+        hits = 0;
+        misses = 0;
+        document.getElementById('responseSplash').style.display = "none";
+        startGame();
+    }
 }
