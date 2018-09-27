@@ -27,9 +27,17 @@ var misses = 0;
 var currentIndex = 0;
 var intervalNeedsClearing = false;
 var gameFinished = false;
-var q1 = ["Question 1", "answer 1", ["false1", "false2", "false3", "false4"]];
-var q2 = ["Question 2", "answer 2", ["false2.1", "false2.2", "false3.2", "false4.2"]];
-var questions = [q1, q2];
+var q1 = ["Who hosted The Tonight Show before Johnny Carson?", "Jack Paar", ["Dick Van Dyke", "Jimmy Stewart", "Jown Wayne", "Tom Ford"]];
+var q2 = ["Who did Johnny Carson hope would host The Tonight Show after him?", "Dave Letterman", ["Jay Leno", "Gary Shandling", "Joan Rivers", "Chevy Chase"]];
+var q3 = ["What late night talk show host used to host The Man Show on Comedy Central?", "Jimmy Kimmel", ["Tom Green", "Connan O'brian", "Samantha Bee", "Stephen Colbert"]];
+var q4 = ["Tom Green hosted a late night talk show on what network?", "MTV", ["TBS", "FOX", "CBS", "Comedy Central"]];
+var q5 = ["After Connan O'Brian left The Tonight Show, he went to what network?", "TBS", ["AMC", "FOX", "HBO", "MTV"]];
+var q6 = ["Johnny Carson holds the record for longest time hosting a late night show, but who holds the record for most shows aired?", "Jay Leno", ["John Stewart", "David Letterman", "Jimmy Kimmel", "Connan O'Brian"]];
+var q7 = ["Who currently hosts a late night show on the same stage that The Beatles performed on during their American television debut?", "Stephen Colbert", ["David Letterman", "Connan O'Brian", "Jimmy Kimmel", "Seth Meyers"]];
+var q8 = ["Who is the current house band for The Tonight Show?", "The Roots", ["Cleto and the Cletones", "Jon Batiste and Stay Human", "Kevin Eubanks", "Paul Shaffer and CBS Orchestra"]];
+var q9 = ["So far, in 2018, who has had the best ratings?", "Stephen Colbert", ["Jimmy Fallon", "Jimmy Kimmel", "Trevor Noah", "Seth Meyers"]];
+var q10 = ["Who used to work on The Dana Carvey Show in the '90s?", "Stephen Colbert", ["Jimmy Fallon", "Seth Meyers", "Jimmy Kimmel", "John Oliver"]];
+var questions = [q1, q2, q3, q4, q5, q6, q7, q8, q9, q10];
 
 
 function startGame() {
@@ -153,7 +161,7 @@ function showCongrats() {
         document.getElementById('runningGameBox').style.display = "inline-block";
         currentIndex++;
         moveOn();
-    }, 3000);
+    }, 2000);
 }
 
 //this function gets called after the current index has been incremented and
