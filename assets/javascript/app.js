@@ -3,28 +3,31 @@ $('#startButton').click(function () {
     startGame();
 });
 $('#answer1').click(function () {
-    answerClicked(0);
-});
-$('#answer2').click(function () {
     answerClicked(1);
 });
-$('#answer3').click(function () {
-    ganswerClicked(2);
+$('#answer2').click(function () {
+    answerClicked(2);
 });
-$('#answer4').click(function () {
+$('#answer3').click(function () {
     answerClicked(3);
 });
-$('#answer5').click(function () {
+$('#answer4').click(function () {
     answerClicked(4);
+});
+$('#answer5').click(function () {
+    answerClicked(5);
 });
 
 //global variables
 var hits = 0;
 var misses = 0;
 var currentIndex = 0;
+var intervalNeedsClearing = false;
 var q1 = ["Question 1", "answer 1", ["false1", "false2", "false3", "false4"]];
 var q2 = ["Question 2", "answer 2", ["false2.1", "false2.2", "false3.2", "false4.2"]];
 var questions = [q1, q2];
+
+
 function startGame() {
     // alert("time to start game.");
     document.getElementById('openingSplash').style.display = "none";
@@ -34,7 +37,24 @@ function startGame() {
 //this main function gets called when user clicks on an answer. a paramater x is passed
 // in corresponding to the index of the answer clicked.
 function answerClicked(x) {
-    alert("you clicked answer of index " + x);
+    //first figure out what the user clicked
+    var selectorStr = '#answer' + x;
+    var selectedAnswer = $(selectorStr).text();
+    //second, figure out correct answer
+    var corAnswer = questions[currentIndex][1];
+    //now, handle response to user selection
+    if (selectedAnswer === corAnswer) {
+        hits++;
+        currentIndex++;
+        intervalNeedsClearing = true;
+        moveOn();
+    }
+    else {
+        misses++;
+        //currentIndex does not need to be incremented here, the showCorrect function will handle that
+        intervalNeedsClearing = true;
+        showCorrect();
+    }
 }
 
 //this funtion gets called every time a new question needs to be displayed
@@ -75,14 +95,23 @@ function startTimer() {
     var t = 15;
     var timer = setInterval(function () {
         $('#timerClock').html("<p>Time remaining: " + t + "s</p>");
-        t--;
-        if (t === 0) {
+        //first check and see if time is remaining. if so, check and see if user
+        //clicked a choice, which would have set the intNeedsClearing bool to true
+        if (t>0) {
+            if (intervalNeedsClearing === true) {
+                clearInterval(timer);
+                intervalNeedsClearing = false;
+            }
+        }
+        //now handle business of timer running out
+        else if (t === 0) {
             clearInterval(timer);
             misses++;
             showCorrect();
         }
+        //now decrement the timer
+        t--;
     }, 1000);
-
 }
 
 //this function is called when the user selects the wrong answer or
@@ -99,15 +128,22 @@ function showCorrect() {
         document.getElementById('wrongSplash').style.display = "none";
         document.getElementById('runningGameBox').style.display = "inline-block";
         currentIndex++;
-        if (currentIndex < questions.length) {
-            displayQuestion();
-        }
-        else {
-            displayScore();
-        }
+        moveOn();
     }, 3000);
 }
 
+//this function gets called after the current index has been incremented and
+//it is now time to display another question (if available) or show the final score
+function moveOn() {
+    if (currentIndex < questions.length) {
+        displayQuestion();
+    }
+    else {
+        displayScore();
+    }
+}
+
+//this function handles the end of game logic and displays the final score
 function displayScore() {
     alert("Game over. You got " + hits + " questions right and " + misses + " questions wrong.");
 }
