@@ -52,13 +52,13 @@ function displayQuestion() {
     //the next four strings are wrong answers. Need to shuffle the answers
     answers = shuffleAnswers(answers);
 
-    //now, prepare the html for the choices to display
+    //now, prepare the view for the choices to display
     answerChoicesHtml = "";
     for (var j = 0; j < 5; j++) {
-        answerChoicesHtml += ("<p>" + answers[j] + "</p>");
+        var idN = j+1;
+        answerChoicesHtml = ("<p>" + answers[j] + "</p>");
+        $('#answer' + idN).html(answerChoicesHtml);
     }
-    //now put that markup into the view
-    $('#choiceField').html(answerChoicesHtml);
 
     //now, start a countdown timer
     startTimer();
@@ -72,7 +72,7 @@ function shuffleAnswers(answers) {
 
 //this function starts a countdown and updates the view every second show the time remaining
 function startTimer() {
-    var t = 5;
+    var t = 15;
     var timer = setInterval(function () {
         $('#timerClock').html("<p>Time remaining: " + t + "s</p>");
         t--;
